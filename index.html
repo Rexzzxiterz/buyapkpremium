@@ -3,339 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pilih Aplikasi Premium - WhatsApp 082313186068</title>
+    <title>Typing Master - Latihan Mengetik Cepat</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
         
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(-45deg, #e0e7ff, #fae8ff, #f0f9ff, #ecfccb);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .glass-card {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-wa {
-            background: #25D366;
-            transition: all 0.2s;
-            animation: pulse 2s infinite;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #1a1a2e;
+            color: #e6e6e6;
         }
         
-        /* Floating animations */
-        .float-1 { animation: floating 4s ease-in-out 0.1s infinite; }
-        .float-2 { animation: floating 4.2s ease-in-out 0.3s infinite; }
-        .float-3 { animation: floating 3.8s ease-in-out 0.5s infinite; }
-        .float-4 { animation: floating 4.1s ease-in-out 0.2s infinite; }
-        .float-5 { animation: floating 3.9s ease-in-out 0.4s infinite; }
-        .float-6 { animation: floating 4.3s ease-in-out 0.6s infinite; }
-        .float-7 { animation: floating 4.4s ease-in-out 0.7s infinite; }
-        .float-8 { animation: floating 4.5s ease-in-out 0.8s infinite; }
+        .key {
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 0 #3d3d3d;
+        }
         
-        @keyframes floating {
-            0%, 100% { transform: translateY(0) rotate(-1deg); }
-            50% { transform: translateY(-12px) rotate(1deg); }
+        .key:active, .key.active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #3d3d3d;
+            background-color: #4cc9f0;
+            color: #000;
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        
+        .target-key {
+            background-color: #f72585 !important;
+            color: white !important;
         }
-
-        .app-card {
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.1);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #4a4e69;
+            border-radius: 5px;
             overflow: hidden;
-            position: relative;
         }
-
-        .app-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #8b5cf6, #ec4899);
-        }
-
-        .app-card:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 12px 25px rgba(124, 58, 237, 0.2);
-        }
-
-        .app-card.selected {
-            border: 2px solid #6d28d9;
-            background-color: #f5f3ff;
-        }
-
-        .checkbox-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 2;
-        }
-
-        .checkbox-container input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
-            border: 2px solid #6d28d9;
-            appearance: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .checkbox-container input[type="checkbox"]:checked {
-            background-color: #6d28d9;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
-            background-size: 12px;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        /* Floating particles background */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+        
+        .progress-fill {
             height: 100%;
-            z-index: -1;
-            overflow: hidden;
+            background-color: #4cc9f0;
+            transition: width 0.3s ease;
         }
-
-        .particle {
-            position: absolute;
-            background: rgba(168, 85, 247, 0.2);
-            border-radius: 50%;
-            animation: floatParticle linear infinite;
+        
+        .blink {
+            animation: blink 1s infinite;
         }
-
-        @keyframes floatParticle {
-            0% { transform: translateY(0) translateX(0); opacity: 0; } 
-            50% { opacity: 0.5; } 
-            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
-<body class="flex items-center justify-center p-4">
-    <!-- Floating particles background -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Main container -->
-    <div class="glass-card w-full max-w-md rounded-2xl p-6 shadow-xl overflow-hidden">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-purple-800 mb-2">PREMIUM APK BY REXZ</h1>
-            <p class="text-sm text-purple-600 font-medium">Bergabung dengan 10.000+ Pengguna</p>
-            <div class="flex justify-center mt-2">
-                <div class="w-16 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></div>
+<body class="min-h-screen flex flex-col items-center py-8">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <h1 class="text-4xl font-bold text-center mb-2 text-[#4cc9f0]">Typing Master</h1>
+        <p class="text-center mb-8 text-gray-400">Latihan mengetik cepat tanpa melihat keyboard</p>
+        
+        <div class="bg-[#16213e] rounded-lg p-6 mb-8 shadow-lg">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <span class="text-lg font-semibold">Level: <span id="level">1</span></span>
+                    <span class="ml-4 text-lg font-semibold">Skor: <span id="score">0</span></span>
+                </div>
+                <div class="text-lg font-semibold">
+                    Waktu: <span id="time">60</span>s
+                </div>
+            </div>
+            
+            <div class="progress-bar mb-6">
+                <div class="progress-fill" id="progress" style="width: 0%"></div>
+            </div>
+            
+            <div class="text-center mb-8">
+                <div class="text-5xl font-bold mb-4 h-16 flex items-center justify-center">
+                    <span id="target-key" class="inline-block px-4 py-2 bg-[#f72585] text-white rounded-lg blink">A</span>
+                </div>
+                <p class="text-gray-400">Tekan tombol yang ditunjukkan di atas</p>
+            </div>
+            
+            <div class="flex justify-center mb-8">
+                <button id="start-btn" class="bg-[#4cc9f0] hover:bg-[#3aa8d8] text-black font-bold py-3 px-6 rounded-lg text-lg transition">
+                    Mulai Permainan
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-10 gap-2 mb-6" id="keyboard">
+                <!-- Baris 1 -->
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="`">~ `</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="1">! 1</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="2">@ 2</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="3"># 3</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="4">$ 4</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="5">% 5</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="6">^ 6</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="7">& 7</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="8">* 8</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="9">( 9</div>
+                
+                <!-- Baris 2 -->
+                <div class="col-span-1"></div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="q">Q</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="w">W</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="e">E</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="r">R</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="t">T</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="y">Y</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="u">U</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="i">I</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="o">O</div>
+                
+                <!-- Baris 3 -->
+                <div class="col-span-2"></div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="a">A</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="s">S</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="d">D</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="f">F</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="g">G</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="h">H</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="j">J</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="k">K</div>
+                
+                <!-- Baris 4 -->
+                <div class="col-span-3"></div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="z">Z</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="x">X</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="c">C</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="v">V</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="b">B</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="n">N</div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="m">M</div>
+                
+                <!-- Baris 5 -->
+                <div class="col-span-5"></div>
+                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center col-span-2" data-key=" ">SPACE</div>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-gray-400">Tekan tombol di keyboard fisik Anda, bukan dengan mengklik di layar</p>
             </div>
         </div>
         
-        <div class="grid grid-cols-1 gap-4 mb-8" id="app-container">
-            <!-- Row 1 -->
-            <div class="grid grid-cols-3 gap-4">
-                <!-- Alight Motion -->
-                <div class="app-card float-1 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="Alight Motion" data-price="35000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-film text-purple-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">Alight Motion</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp35rb/<span class="font-normal">bln</span></p>
-                    </div>
+        <div class="bg-[#16213e] rounded-lg p-6 shadow-lg hidden" id="result">
+            <h2 class="text-2xl font-bold text-center mb-4 text-[#4cc9f0]">Hasil Permainan</h2>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-[#1a1a2e] p-4 rounded-lg">
+                    <p class="text-gray-400">Skor Akhir</p>
+                    <p class="text-3xl font-bold" id="final-score">0</p>
                 </div>
-                
-                <!-- CapCut -->
-                <div class="app-card float-2 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="CapCut" data-price="40000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-red-100 to-red-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-scissors text-red-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">CapCut</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp40rb/<span class="font-normal">bln</span></p>
-                    </div>
+                <div class="bg-[#1a1a2e] p-4 rounded-lg">
+                    <p class="text-gray-400">Level Tercapai</p>
+                    <p class="text-3xl font-bold" id="final-level">1</p>
                 </div>
-                
-                <!-- ChatGPT -->
-                <div class="app-card float-3 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="ChatGPT" data-price="50000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-green-100 to-green-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-robot text-green-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">ChatGPT</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp50rb/<span class="font-normal">bln</span></p>
-                    </div>
+                <div class="bg-[#1a1a2e] p-4 rounded-lg">
+                    <p class="text-gray-400">KPM (Ketikan Per Menit)</p>
+                    <p class="text-3xl font-bold" id="kpm">0</p>
+                </div>
+                <div class="bg-[#1a1a2e] p-4 rounded-lg">
+                    <p class="text-gray-400">Akurasi</p>
+                    <p class="text-3xl font-bold" id="accuracy">0%</p>
                 </div>
             </div>
-
-            <!-- Row 2 -->
-            <div class="grid grid-cols-3 gap-4">
-                <!-- Canva -->
-                <div class="app-card float-4 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="Canva" data-price="45000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-palette text-blue-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">Canva</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp45rb/<span class="font-normal">bln</span></p>
-                    </div>
-                </div>
-
-                <!-- YouTube Premium -->
-                <div class="app-card float-5 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="YouTube Premium" data-price="60000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-red-100 to-red-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fab fa-youtube text-red-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">YouTube Premium</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp60rb/<span class="font-normal">bln</span></p>
-                    </div>
-                </div>
-
-                <!-- Netflix Premium -->
-                <div class="app-card float-6 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="Netflix Premium" data-price="75000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-red-100 to-red-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-film text-red-700 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">Netflix Premium</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp75rb/<span class="font-normal">bln</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Row 3 -->
-            <div class="grid grid-cols-3 gap-4">
-                <!-- Nomor Kosong -->
-                <div class="app-card float-7 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="Nomor Kosong" data-price="20000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-phone text-yellow-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">Nomor Kosong</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp20rb/<span class="font-normal">bln</span></p>
-                    </div>
-                </div>
-
-                <!-- Panel Pterodactyl -->
-                <div class="app-card float-8 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="Panel Pterodactyl" data-price="50000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-server text-blue-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">Panel Pterodactyl</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp50rb/<span class="font-normal">bln</span></p>
-                    </div>
-                </div>
-
-                <!-- Reseller Panel -->
-                <div class="app-card float-1 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="Reseller Panel" data-price="60000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-green-100 to-green-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-user-friends text-green-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">Reseller Panel</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp60rb/<span class="font-normal">bln</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Row 4 -->
-            <div class="grid grid-cols-3 gap-4">
-                <!-- Admin Panel -->
-                <div class="app-card float-2 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="Admin Panel" data-price="70000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-red-100 to-red-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-user-shield text-red-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">Admin Panel</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp70rb/<span class="font-normal">bln</span></p>
-                    </div>
-                </div>
-
-                <!-- Script Bot -->
-                <div class="app-card float-3 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="Script Bot" data-price="80000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-code text-purple-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">Script Bot</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp80rb/<span class="font-normal">bln</span></p>
-                    </div>
-                </div>
-
-                <!-- Murbug -->
-                <div class="app-card float-4 bg-white">
-                    <div class="checkbox-container">
-                        <input type="checkbox" class="app-checkbox" data-name="Murbug" data-price="30000">
-                    </div>
-                    <div class="p-4 text-center">
-                        <div class="w-14 h-14 bg-gradient-to-br from-orange-100 to-orange-50 rounded-xl mx-auto mb-3 flex items-center justify-center">
-                            <i class="fas fa-bug text-orange-600 text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-sm mb-1">Murbug</h3>
-                        <p class="text-xs font-semibold text-purple-700">Rp30rb/<span class="font-normal">bln</span></p>
-                    </div>
-                </div>
+            <div class="flex justify-center">
+                <button id="restart-btn" class="bg-[#4cc9f0] hover:bg-[#3aa8d8] text-black font-bold py-3 px-6 rounded-lg text-lg transition">
+                    Main Lagi
+                </button>
             </div>
         </div>
+    </div>
+
+    <script>
+        // Variabel game
+        let gameActive = false;
+        let score = 0;
+        let level = 1;
+        let timeLeft = 60;
+        let timer;
+        let correctPresses = 0;
+        let totalPresses = 0;
+        let currentTargetKey = '';
         
-        <!-- WhatsApp Button -->
-        <div class="text-center">
-            <button id="order-btn" class="btn-wa text-white font-bold py-4 px-6 rounded-full inline-block text-sm mb-3 w-full opacity-50 cursor-not-allowed" disabled>
-               <i class="fab fa-whatsapp mr-2"></i> Pesan Sekarang
-            </button>
-            <p class="text-xs text-gray-600">Respon
+        // Elemen DOM
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const targetKeyElement = document.getElementById('target-key');
+        const scoreElement = document.getElementById('score');
+        const levelElement = document.getElementById('level');
+        const timeElement = document.getElementById('time');
+        const progressElement = document.getElementById('progress');
+        const keyboardElement = document.getElementById('keyboard');
+        const resultElement = document.getElementById('result');
+        const finalScoreElement = document.getElementById('final-score');
+        const finalLevelElement = document.getElementById('final-level');
+        const kpmElement = document.getElementById('kpm');
+        const accuracyElement = document.getElementById('accuracy');
+        
+        // Daftar semua tombol yang akan digunakan dalam game
+        const keys = [
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 
+            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 
+            'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', 
+            '5', '6', '7', '8', '9', '0', '`', ' ', 
+        ];
+        
+        // Fungsi untuk memulai game
+        function startGame() {
+            gameActive = true;
+            score = 0;
+            level = 1;
+            timeLeft = 60;
+            correctPresses = 0;
+            totalPresses = 0;
+            
+            scoreElement.textContent = score;
+            levelElement.textContent = level;
+            timeElement.textContent = timeLeft;
+            progressElement.style.width = '0%';
+            
+            startBtn.classList.add('hidden');
+            resultElement.classList.add('hidden');
+            
+            // Mulai timer
+            timer = setInterval(updateTimer, 1000);
+            
+            // Pilih tombol acak pertama
+            selectRandomKey();
+        }
+        
+        // Fungsi untuk mengupdate timer
+        function updateTimer() {
+            timeLeft--;
+            timeElement.textContent = timeLeft;
+            
+            // Update progress bar
+            const progressPercentage = ((60 - timeLeft) / 60) * 100;
+            progressElement.style.width = `${progressPercentage}%`;
+            
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }
+        
+        // Fungsi untuk memilih tombol acak
+        function selectRandomKey() {
+            // Hapus highlight dari tombol sebelumnya
+            if (currentTargetKey) {
+                const prevKeyElements = document.querySelectorAll(`.key[data-key="${currentTargetKey}"]`);
+                prevKeyElements.forEach(el => el.classList.remove('target-key'));
+            }
+            
+            // Pilih tombol baru secara acak
+            const randomIndex = Math.floor(Math.random() * keys.length);
+            currentTargetKey = keys[randomIndex];
+            
+            // Tampilkan tombol target
+            targetKeyElement.textContent = currentTargetKey.toUpperCase();
+            
+            // Highlight tombol di keyboard visual
+            const keyElements = document.querySelectorAll(`.key[data-key="${currentTargetKey}"]`);
+            keyElements.forEach(el => el.classList.add('target-key'));
+        }
+        
+        // Fungsi untuk menangani penekanan tombol yang benar
+        function handleCorrectPress() {
+            correctPresses++;
+            totalPresses++;
+            
+            // Update skor dan level
+            score += level * 10;
+            scoreElement.textContent = score;
+            
+            // Naik level setiap 5 ketikan benar
+            if (correctPresses % 5 === 0) {
+                level++;
+                levelElement.textContent = level;
+                
+                // Animasi level up
+                targetKeyElement.classList.remove('blink');
+                void targetKeyElement.offsetWidth; // Trigger reflow
+                targetKeyElement.classList.add('blink');
+            }
+            
+            // Pilih tombol baru
+            selectRandomKey();
+        }
+        
+        // Fungsi untuk menangani penekanan tombol yang salah
+        function handleWrongPress() {
+            totalPresses++;
+            
+            // Kurangi skor (tapi tidak kurang dari 0)
+            score = Math.max(0, score - 5);
+            scoreElement.textContent = score;
+            
+            // Animasi salah
+            targetKeyElement.classList.add('animate-pulse');
+            setTimeout(() => {
+                targetKeyElement.classList.remove('animate-pulse');
+            }, 300);
+        }
+        
+        // Fungsi untuk mengakhiri game
+        function endGame() {
+            clearInterval(timer);
+            gameActive = false;
+            
+            // Hitung statistik akhir
+            const kpm = Math.round((correctPresses / 60) * 60);
+            const accuracy = totalPresses > 0 ? Math.round((correctPresses / totalPresses) * 100) : 0;
+            
+            // Tampilkan hasil
+            finalScoreElement.textContent = score;
+            finalLevelElement.textContent = level;
+            kpmElement.textContent = kpm;
+            accuracyElement.textContent = `${accuracy}%`;
+            
+            // Tampilkan panel hasil
+            resultElement.classList.remove('hidden');
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', startGame);
+        
+        // Tangkap penekanan tombol keyboard
+        document.addEventListener('keydown', (e) => {
+            if (!gameActive) return;
+            
+            const pressedKey = e.key.toLowerCase();
+            
+            // Highlight tombol yang ditekan di
