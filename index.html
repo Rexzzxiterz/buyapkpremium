@@ -3,333 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Master - Latihan Mengetik Cepat</title>
+    <title>Digital Savings - Tabungan Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         
         body {
-            font-family: 'JetBrains Mono', monospace;
-            background-color: #1a1a2e;
-            color: #e6e6e6;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
         }
         
-        .key {
-            transition: all 0.1s ease;
-            box-shadow: 0 4px 0 #3d3d3d;
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
-        .key:active, .key.active {
-            transform: translateY(4px);
-            box-shadow: 0 1px 0 #3d3d3d;
-            background-color: #4cc9f0;
-            color: #000;
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .target-key {
-            background-color: #f72585 !important;
-            color: white !important;
+        .navbar {
+            backdrop-filter: blur(10px);
         }
         
-        .progress-bar {
-            height: 10px;
-            background-color: #4a4e69;
-            border-radius: 5px;
-            overflow: hidden;
+        .btn-primary {
+            background-color: #4f46e5;
+            transition: all 0.3s ease;
         }
         
-        .progress-fill {
-            height: 100%;
-            background-color: #4cc9f0;
-            transition: width 0.3s ease;
+        .btn-primary:hover {
+            background-color: #4338ca;
+            transform: translateY(-1px);
         }
         
-        .blink {
-            animation: blink 1s infinite;
+        .btn-danger {
+            background-color: #ef4444;
+            transition: all 0.3s ease;
         }
         
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        .btn-danger:hover {
+            background-color: #dc2626;
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background-color: #10b981;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+        }
+        
+        .transaction-item {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .transaction-item:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .deposit {
+            border-left-color: #10b981;
+        }
+        
+        .withdraw {
+            border-left-color: #ef4444;
+        }
+        
+        .floating-btn {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-8">
-    <div class="container mx-auto px-4 max-w-4xl">
-        <h1 class="text-4xl font-bold text-center mb-2 text-[#4cc9f0]">Typing Master</h1>
-        <p class="text-center mb-8 text-gray-400">Latihan mengetik cepat tanpa melihat keyboard</p>
-        
-        <div class="bg-[#16213e] rounded-lg p-6 mb-8 shadow-lg">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <span class="text-lg font-semibold">Level: <span id="level">1</span></span>
-                    <span class="ml-4 text-lg font-semibold">Skor: <span id="score">0</span></span>
+<body>
+    <!-- App Container -->
+    <div id="app" class="min-h-screen">
+        <!-- Navigation -->
+        <nav class="navbar bg-white border-b border-gray-200 fixed w-full z-10">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-piggy-bank text-indigo-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-indigo-600">Digital Savings</span>
+                    </div>
+                    <div id="auth-buttons" class="flex items-center space-x-4">
+                        <button id="login-btn" class="btn-primary text-white px-4 py-2 rounded-lg font-medium">Masuk</button>
+                        <button id="register-btn" class="text-indigo-600 px-4 py-2 rounded-lg font-medium border border-indigo-600 hover:bg-indigo-50 transition">Daftar</button>
+                    </div>
+                    <div id="user-menu" class="hidden flex items-center space-x-4">
+                        <div class="relative">
+                            <button id="user-menu-button" class="flex items-center focus:outline-none">
+                                <span class="text-gray-700 font-medium mr-2" id="username-display"></span>
+                                <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <i class="fas fa-user text-indigo-600"></i>
+                                </div>
+                            </button>
+                            <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20">
+                                <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Keluar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-lg font-semibold">
-                    Waktu: <span id="time">60</span>s
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="pt-16 pb-20">
+            <!-- Auth Screens -->
+            <div id="auth-screens">
+                <!-- Login Form -->
+                <div id="login-screen" class="hidden max-w-md mx-auto mt-10 p-8 bg-white rounded-xl shadow-md">
+                    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Masuk ke Akun Anda</h2>
+                    <form id="login-form">
+                        <div class="mb-4">
+                            <label for="login-email" class="block text-gray-700 mb-2">Email</label>
+                            <input type="email" id="login-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="login-password" class="block text-gray-700 mb-2">Password</label>
+                            <input type="password" id="login-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <button type="submit" class="btn-primary w-full text-white py-2 rounded-lg font-medium">Masuk</button>
+                    </form>
+                    <p class="text-center mt-4 text-gray-600">
+                        Belum punya akun? <button id="show-register" class="text-indigo-600 hover:underline">Daftar disini</button>
+                    </p>
+                </div>
+
+                <!-- Register Form -->
+                <div id="register-screen" class="hidden max-w-md mx-auto mt-10 p-8 bg-white rounded-xl shadow-md">
+                    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Daftar Akun Baru</h2>
+                    <form id="register-form">
+                        <div class="mb-4">
+                            <label for="register-name" class="block text-gray-700 mb-2">Nama Lengkap</label>
+                            <input type="text" id="register-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="register-email" class="block text-gray-700 mb-2">Email</label>
+                            <input type="email" id="register-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="register-password" class="block text-gray-700 mb-2">Password</label>
+                            <input type="password" id="register-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <button type="submit" class="btn-primary w-full text-white py-2 rounded-lg font-medium">Daftar</button>
+                    </form>
+                    <p class="text-center mt-4 text-gray-600">
+                        Sudah punya akun? <button id="show-login" class="text-indigo-600 hover:underline">Masuk disini</button>
+                    </p>
                 </div>
             </div>
-            
-            <div class="progress-bar mb-6">
-                <div class="progress-fill" id="progress" style="width: 0%"></div>
-            </div>
-            
-            <div class="text-center mb-8">
-                <div class="text-5xl font-bold mb-4 h-16 flex items-center justify-center">
-                    <span id="target-key" class="inline-block px-4 py-2 bg-[#f72585] text-white rounded-lg blink">A</span>
+
+            <!-- Dashboard -->
+            <div id="dashboard" class="hidden max-w-6xl mx-auto px-4">
+                <!-- Balance Card -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div class="card bg-white p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500">Saldo Anda</p>
+                                <h3 class="text-3xl font-bold mt-1" id="balance-amount">Rp0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-wallet text-indigo-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button id="deposit-btn" class="btn-success text-white px-4 py-2 rounded-lg font-medium flex-1">
+                                <i class="fas fa-plus mr-2"></i> Setor
+                            </button>
+                            <button id="withdraw-btn" class="btn-danger text-white px-4 py-2 rounded-lg font-medium flex-1">
+                                <i class="fas fa-minus mr-2"></i> Tarik
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card bg-white p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500">Total Setoran</p>
+                                <h3 class="text-3xl font-bold mt-1 text-green-600" id="total-deposit">Rp0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+                                <i class="fas fa-arrow-down text-green-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-gray-500 text-sm">+12% dari bulan lalu</p>
+                        </div>
+                    </div>
+
+                    <div class="card bg-white p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500">Total Penarikan</p>
+                                <h3 class="text-3xl font-bold mt-1 text-red-600" id="total-withdrawal">Rp0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                                <i class="fas fa-arrow-up text-red-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-gray-500 text-sm">-5% dari bulan lalu</p>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-gray-400">Tekan tombol yang ditunjukkan di atas</p>
-            </div>
-            
-            <div class="flex justify-center mb-8">
-                <button id="start-btn" class="bg-[#4cc9f0] hover:bg-[#3aa8d8] text-black font-bold py-3 px-6 rounded-lg text-lg transition">
-                    Mulai Permainan
-                </button>
-            </div>
-            
-            <div class="grid grid-cols-10 gap-2 mb-6" id="keyboard">
-                <!-- Baris 1 -->
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="`">~ `</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="1">! 1</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="2">@ 2</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="3"># 3</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="4">$ 4</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="5">% 5</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="6">^ 6</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="7">& 7</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="8">* 8</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="9">( 9</div>
-                
-                <!-- Baris 2 -->
-                <div class="col-span-1"></div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="q">Q</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="w">W</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="e">E</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="r">R</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="t">T</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="y">Y</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="u">U</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="i">I</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="o">O</div>
-                
-                <!-- Baris 3 -->
-                <div class="col-span-2"></div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="a">A</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="s">S</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="d">D</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="f">F</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="g">G</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="h">H</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="j">J</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="k">K</div>
-                
-                <!-- Baris 4 -->
-                <div class="col-span-3"></div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="z">Z</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="x">X</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="c">C</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="v">V</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="b">B</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="n">N</div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center" data-key="m">M</div>
-                
-                <!-- Baris 5 -->
-                <div class="col-span-5"></div>
-                <div class="key bg-[#4a4e69] text-white font-bold py-3 px-4 rounded text-center col-span-2" data-key=" ">SPACE</div>
-            </div>
-            
-            <div class="text-center">
-                <p class="text-gray-400">Tekan tombol di keyboard fisik Anda, bukan dengan mengklik di layar</p>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="card bg-white p-6 rounded-xl">
+                        <h3 class="text-lg font-bold mb-4">Perkembangan Tabungan</h3>
+                        <canvas id="savings-chart" height="250"></canvas>
+                    </div>
+                    <div class="card bg-white p-6 rounded-xl">
+                        <h3 class="text-lg font-bold mb-4">Distribusi Pengeluaran</h3>
+                        <canvas id="expense-chart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <!-- Transactions Section -->
+                <div class="card bg-white p-6 rounded-xl mt-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold">Riwayat Transaksi</h3>
+                        <button id="view-all-transactions" class="text-indigo-600 hover:underline">Lihat Semua</button>
+                    </div>
+                    <div id="transactions-list" class="space-y-3">
+                        <!-- Transactions will be added here dynamically -->
+                        <div class="text-center py-10 text-gray-500">
+                            <i class="fas fa-exchange-alt text-4xl mb-3"></i>
+                            <p>Belum ada transaksi</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="bg-[#16213e] rounded-lg p-6 shadow-lg hidden" id="result">
-            <h2 class="text-2xl font-bold text-center mb-4 text-[#4cc9f0]">Hasil Permainan</h2>
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="bg-[#1a1a2e] p-4 rounded-lg">
-                    <p class="text-gray-400">Skor Akhir</p>
-                    <p class="text-3xl font-bold" id="final-score">0</p>
-                </div>
-                <div class="bg-[#1a1a2e] p-4 rounded-lg">
-                    <p class="text-gray-400">Level Tercapai</p>
-                    <p class="text-3xl font-bold" id="final-level">1</p>
-                </div>
-                <div class="bg-[#1a1a2e] p-4 rounded-lg">
-                    <p class="text-gray-400">KPM (Ketikan Per Menit)</p>
-                    <p class="text-3xl font-bold" id="kpm">0</p>
-                </div>
-                <div class="bg-[#1a1a2e] p-4 rounded-lg">
-                    <p class="text-gray-400">Akurasi</p>
-                    <p class="text-3xl font-bold" id="accuracy">0%</p>
+
+        <!-- Transaction Modals -->
+        <div id="modals">
+            <!-- Deposit Modal -->
+            <div id="deposit-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30">
+                <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Setor Uang</h3>
+                        <button id="close-deposit-modal" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <form id="deposit-form">
+                        <div class="mb-4">
+                            <label for="deposit-amount" class="block text-gray-700 mb-2">Jumlah</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                                <input type="number" id="deposit-amount" class="w-full pl-8 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="0" required>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <label for="deposit-method" class="block text-gray-700 mb-2">Metode Pembayaran</label>
+                            <select id="deposit-method" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                                <option value="">Pilih metode...</option>
+                                <option value="bank-transfer">Transfer Bank</option>
+                                <option value="credit-card">Kartu Kredit/Debit</option>
+                                <option value="e-wallet">E-Wallet</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-success w-full text-white py-2 rounded-lg font-medium">Setor Sekarang</button>
+                    </form>
                 </div>
             </div>
-            <div class="flex justify-center">
-                <button id="restart-btn" class="bg-[#4cc9f0] hover:bg-[#3aa8d8] text-black font-bold py-3 px-6 rounded-lg text-lg transition">
-                    Main Lagi
-                </button>
+
+            <!-- Withdraw Modal -->
+            <div id="withdraw-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30">
+                <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Tarik Uang</h3>
+                        <button id="close-withdraw-modal" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <form id="withdraw-form">
+                        <div class="mb-4">
+                            <label for="withdraw-amount" class="block text-gray-700 mb-2">Jumlah</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                                <input type="number" id="withdraw-amount" class="w-full pl-8 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="0" required>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <label for="withdraw-account" class="block text-gray-700 mb-2">Tujuan Penarikan</label>
+                            <select id="withdraw-account" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                                <option value="">Pilih rekening...</option>
+                                <option value="bca">BCA - 1234567890</option>
+                                <option value="mandiri">Mandiri - 0987654321</option>
+                                <option value="bri">BRI - 5647382910</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-danger w-full text-white py-2 rounded-lg font-medium">Tarik Sekarang</button>
+                    </form>
+                </div>
             </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div id="fab" class="hidden fixed bottom-6 right-6">
+            <button class="floating-btn w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg">
+                <i class="fas fa-plus text-xl"></i>
+            </button>
         </div>
     </div>
 
     <script>
-        // Variabel game
-        let gameActive = false;
-        let score = 0;
-        let level = 1;
-        let timeLeft = 60;
-        let timer;
-        let correctPresses = 0;
-        let totalPresses = 0;
-        let currentTargetKey = '';
-        
-        // Elemen DOM
-        const startBtn = document.getElementById('start-btn');
-        const restartBtn = document.getElementById('restart-btn');
-        const targetKeyElement = document.getElementById('target-key');
-        const scoreElement = document.getElementById('score');
-        const levelElement = document.getElementById('level');
-        const timeElement = document.getElementById('time');
-        const progressElement = document.getElementById('progress');
-        const keyboardElement = document.getElementById('keyboard');
-        const resultElement = document.getElementById('result');
-        const finalScoreElement = document.getElementById('final-score');
-        const finalLevelElement = document.getElementById('final-level');
-        const kpmElement = document.getElementById('kpm');
-        const accuracyElement = document.getElementById('accuracy');
-        
-        // Daftar semua tombol yang akan digunakan dalam game
-        const keys = [
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 
-            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 
-            'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', 
-            '5', '6', '7', '8', '9', '0', '`', ' ', 
-        ];
-        
-        // Fungsi untuk memulai game
-        function startGame() {
-            gameActive = true;
-            score = 0;
-            level = 1;
-            timeLeft = 60;
-            correctPresses = 0;
-            totalPresses = 0;
-            
-            scoreElement.textContent = score;
-            levelElement.textContent = level;
-            timeElement.textContent = timeLeft;
-            progressElement.style.width = '0%';
-            
-            startBtn.classList.add('hidden');
-            resultElement.classList.add('hidden');
-            
-            // Mulai timer
-            timer = setInterval(updateTimer, 1000);
-            
-            // Pilih tombol acak pertama
-            selectRandomKey();
-        }
-        
-        // Fungsi untuk mengupdate timer
-        function updateTimer() {
-            timeLeft--;
-            timeElement.textContent = timeLeft;
-            
-            // Update progress bar
-            const progressPercentage = ((60 - timeLeft) / 60) * 100;
-            progressElement.style.width = `${progressPercentage}%`;
-            
-            if (timeLeft <= 0) {
-                endGame();
-            }
-        }
-        
-        // Fungsi untuk memilih tombol acak
-        function selectRandomKey() {
-            // Hapus highlight dari tombol sebelumnya
-            if (currentTargetKey) {
-                const prevKeyElements = document.querySelectorAll(`.key[data-key="${currentTargetKey}"]`);
-                prevKeyElements.forEach(el => el.classList.remove('target-key'));
-            }
-            
-            // Pilih tombol baru secara acak
-            const randomIndex = Math.floor(Math.random() * keys.length);
-            currentTargetKey = keys[randomIndex];
-            
-            // Tampilkan tombol target
-            targetKeyElement.textContent = currentTargetKey.toUpperCase();
-            
-            // Highlight tombol di keyboard visual
-            const keyElements = document.querySelectorAll(`.key[data-key="${currentTargetKey}"]`);
-            keyElements.forEach(el => el.classList.add('target-key'));
-        }
-        
-        // Fungsi untuk menangani penekanan tombol yang benar
-        function handleCorrectPress() {
-            correctPresses++;
-            totalPresses++;
-            
-            // Update skor dan level
-            score += level * 10;
-            scoreElement.textContent = score;
-            
-            // Naik level setiap 5 ketikan benar
-            if (correctPresses % 5 === 0) {
-                level++;
-                levelElement.textContent = level;
-                
-                // Animasi level up
-                targetKeyElement.classList.remove('blink');
-                void targetKeyElement.offsetWidth; // Trigger reflow
-                targetKeyElement.classList.add('blink');
-            }
-            
-            // Pilih tombol baru
-            selectRandomKey();
-        }
-        
-        // Fungsi untuk menangani penekanan tombol yang salah
-        function handleWrongPress() {
-            totalPresses++;
-            
-            // Kurangi skor (tapi tidak kurang dari 0)
-            score = Math.max(0, score - 5);
-            scoreElement.textContent = score;
-            
-            // Animasi salah
-            targetKeyElement.classList.add('animate-pulse');
-            setTimeout(() => {
-                targetKeyElement.classList.remove('animate-pulse');
-            }, 300);
-        }
-        
-        // Fungsi untuk mengakhiri game
-        function endGame() {
-            clearInterval(timer);
-            gameActive = false;
-            
-            // Hitung statistik akhir
-            const kpm = Math.round((correctPresses / 60) * 60);
-            const accuracy = totalPresses > 0 ? Math.round((correctPresses / totalPresses) * 100) : 0;
-            
-            // Tampilkan hasil
-            finalScoreElement.textContent = score;
-            finalLevelElement.textContent = level;
-            kpmElement.textContent = kpm;
-            accuracyElement.textContent = `${accuracy}%`;
-            
-            // Tampilkan panel hasil
-            resultElement.classList.remove('hidden');
-        }
-        
-        // Event listeners
-        startBtn.addEventListener('click', startGame);
-        restartBtn.addEventListener('click', startGame);
-        
-        // Tangkap penekanan tombol keyboard
-        document.addEventListener('keydown', (e) => {
-            if (!gameActive) return;
-            
-            const pressedKey = e.key.toLowerCase();
-            
-            // Highlight tombol yang ditekan di
+        // Data aplikasi
+        let currentUser = null;
+        let savingsData = {
+            balance: 0,
+            transactions: [],
+            monthlyData: [500000, 100
