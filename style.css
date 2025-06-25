@@ -1,0 +1,23 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #0e1117;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+#crypto-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.crypto-card {
+  background: #1a1f2e;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 10px;
+  width: 180px;
+  box-shadow: 0 0 10px #000;
+}
